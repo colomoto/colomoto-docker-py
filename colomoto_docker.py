@@ -190,12 +190,9 @@ def main():
     docker_argv = check_docker()
 
     if args.doi is not None:
-        if args.version == "same":
-            doi_version = None
-        else:
-            doi_version = args.version
+        doi_version = args.version if args.version != "same" else None
         docker_image_name = pull_image_from_doi(args.doi, docker_argv,
-                                                version=args.version,
+                                                version=doi_version,
                                                 sandbox=args.zenodo_sandbox)
         if docker_image_name is None:
             print(f"fail to download image {args.doi}", file=sys.stderr)
