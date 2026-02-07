@@ -292,6 +292,8 @@ def main():
 
     if args.bind:
         argv += ["--volume", "%s:%s" % (os.path.abspath(args.bind), args.workdir)]
+        if hasattr(os, "getuid") and os.getuid() != 1000:
+            argv += ["-e", f"UID={os.getuid()}", "-e", f"GID={os.getgid()}"]
     else:
         persistent_mount = "%s/%s" % (args.workdir, persistent_dir)
         argv += ["--volume", "%s:%s" % (persistent_volume, persistent_mount)]
